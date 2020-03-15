@@ -1,4 +1,3 @@
-# owfmodules.skeleton
-Module base repository
+# owfmodules.logic.logic_analyzer
 
-Please read [CONTRIBUTING.md](https://bitbucket.org/octowire/octowire-framework/src/master/CONTRIBUTING.md) to follow the contribution process.
+Collect sample from IO8 to IO15 and save the result in a CSV file which can be opened with pulseview.
