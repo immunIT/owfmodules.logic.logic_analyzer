@@ -24,23 +24,26 @@ class LogicAnalyzer(AModule):
                            'CSV file which can be opened with pulseview.',
             'author': 'Jordan Ovrè <ghecko78@gmail.com> / Paul Duncan <eresse@dooba.io>'
         })
-        self.options = [
-            {"Name": "trigger_gpio_pin", "Value": "", "Required": True, "Type": "int",
-             "Description": "Trigger sniffing when a change is detected on the configured\n"
-                            "GPIO pin. Setting the trigger to an invalid pin number\n"
-                            "(16 or higher) will start the sniffing process immediately,\n"
-                            "without waiting for any I/O change", "Default": 16},
-            {"Name": "samples", "Value": "", "Required": True, "Type": "int",
-             "Description": "The number of samples to collect (maximum: 131072)", "Default": 131072},
-            {"Name": "samplerate", "Value": "", "Required": True, "Type": "int",
-             "Description": "The sample rate (speed in MSPS). 1 000 000 = 1MSPS\n"
-                            "(maximum: 18 750 000 -> 18.75MSPS). Valid values:\n"
-                            "1MSPS, 5MSPS, 10MSPS and 18.75MSPS.", "Default": 18750000},
-            {"Name": "channels", "Value": "", "Required": True, "Type": "int",
-             "Description": "The number of channel to save in the output file.", "Default": 8},
-            {"Name": "output_file", "Value": "", "Required": True, "Type": "file_w",
-             "Description": "The output filename.", "Default": ""}
-        ]
+        self.options = {
+            "trigger_gpio_pin": {"Value": "", "Required": True, "Type": "int",
+                                 "Description": "Trigger sniffing when a change is detected on the configured\n"
+                                                "GPIO pin. Setting the trigger to an invalid pin number\n"
+                                                "(16 or higher) will start the sniffing process immediately,\n"
+                                                "without waiting for any I/O change",
+                                 "Default": 16},
+            "samples": {"Value": "", "Required": True, "Type": "int",
+                        "Description": "The number of samples to collect (maximum: 131072)", "Default": 131072},
+            "samplerate": {"Value": "", "Required": True, "Type": "int",
+                           "Description": "The sample rate (speed in MSPS). 1 000 000 = 1MSPS\n"
+                                          "(maximum: 18 750 000 -> 18.75MSPS). Valid values:\n"
+                                          "1MSPS, 5MSPS, 10MSPS and 18.75MSPS.",
+                           "Default": 18750000},
+            "channels": {"Value": "", "Required": True, "Type": "int",
+                         "Description": "The number of channel to save in the output file.",
+                         "Default": 8},
+            "output_file": {"Name": "output_file", "Value": "", "Required": True, "Type": "file_w",
+                            "Description": "The output filename.", "Default": ""}
+        }
 
     @staticmethod
     def get_bits(samples):
@@ -67,11 +70,11 @@ class LogicAnalyzer(AModule):
         return True
 
     def get_samples(self):
-        trigger_gpio_pin = self.get_option_value("trigger_gpio_pin")
-        samples = self.get_option_value("samples")
-        samplerate = self.get_option_value("samplerate")
-        channels = self.get_option_value("channels")
-        output_file = self.get_option_value("output_file")
+        trigger_gpio_pin = self.options["trigger_gpio_pin"]["Value"]
+        samples = self.options["samples"]["Value"]
+        samplerate = self.options["samplerate"]["Value"]
+        channels = self.options["channels"]["Value"]
+        output_file = self.options["output_file"]["Value"]
 
         if os.path.splitext(output_file)[1].upper() != '.CSV':
             output_file = output_file + '.csv'
