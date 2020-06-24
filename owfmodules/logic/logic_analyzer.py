@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 # Octowire Framework
-# Copyright (c) Jordan Ovrè / Paul Duncan
-# License: GPLv3
-# Paul Duncan / Eresse <eresse@dooba.io>
-# Jordan Ovrè / Ghecko <ghecko78@gmail.com
+# Copyright (c) ImmunIT - Jordan Ovrè / Paul Duncan
+# License: Apache 2.0
+# Paul Duncan / Eresse <pduncan@immunit.ch>
+# Jordan Ovrè / Ghecko <jovre@immunit.ch>
 
 import csv
 import os
@@ -22,7 +22,7 @@ class LogicAnalyzer(AModule):
             'version': '1.0.0',
             'description': 'Collect sample from IO8 to IO15 and save the result in a '
                            'CSV file which can be opened with pulseview.',
-            'author': 'Jordan Ovrè <ghecko78@gmail.com> / Paul Duncan <eresse@dooba.io>'
+            'author': 'Jordan Ovrè / Ghecko <jovre@immunit.ch>, Paul Duncan / Eresse <pduncan@immunit.ch>'
         })
         self.options = {
             "trigger_gpio_pin": {"Value": "", "Required": True, "Type": "int",
