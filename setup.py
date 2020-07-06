@@ -10,7 +10,7 @@ __license__ = "Apache 2.0"
 __version__ = "1.0.0"
 __contact__ = "Jordan Ovrè / Ghecko <jovre@immunit.ch>, Paul Duncan / Eresse <pduncan@immunit.ch>"
 
-description = 'Octowire Framework Logic Analyzer'
+description = 'Collect samples on 8 GPIO channels for analysis in pulseview'
 name = 'owfmodules.logic.logic_analyzer'
 
 setup(

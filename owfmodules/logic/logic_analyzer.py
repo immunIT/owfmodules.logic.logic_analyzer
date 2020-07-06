@@ -20,8 +20,8 @@ class LogicAnalyzer(AModule):
         self.meta.update({
             'name': 'Logic Analyzer',
             'version': '1.0.0',
-            'description': 'Collect sample from IO8 to IO15 and save the result in a '
-                           'CSV file which can be opened with pulseview.',
+            'description': 'Collect samples on 8 GPIO channels and save the result in a '
+                           'CSV file for analysis in pulseview.',
             'author': 'Jordan Ovrè / Ghecko <jovre@immunit.ch>, Paul Duncan / Eresse <pduncan@immunit.ch>'
         })
         self.options = {
@@ -34,12 +34,12 @@ class LogicAnalyzer(AModule):
             "samples": {"Value": "", "Required": True, "Type": "int",
                         "Description": "The number of samples to collect (maximum: 131072)", "Default": 131072},
             "samplerate": {"Value": "", "Required": True, "Type": "int",
-                           "Description": "The sample rate (speed in MSPS). 1 000 000 = 1MSPS\n"
+                           "Description": "The sample rate. 1 000 000 = 1MSPS\n"
                                           "(maximum: 18 750 000 -> 18.75MSPS). Valid values:\n"
                                           "1MSPS, 5MSPS, 10MSPS and 18.75MSPS.",
                            "Default": 18750000},
             "channels": {"Value": "", "Required": True, "Type": "int",
-                         "Description": "The number of channel to save in the output file.",
+                         "Description": "The number of channels to save in the output file.",
                          "Default": 8},
             "output_file": {"Name": "output_file", "Value": "", "Required": True, "Type": "file_w",
                             "Description": "The output filename.", "Default": ""}
@@ -59,13 +59,13 @@ class LogicAnalyzer(AModule):
                                self.logger.ERROR)
             return False
         if samples not in range(1, 131073):
-            self.logger.handle("The number of sample must be defined between 1 and 131072.", self.logger.ERROR)
+            self.logger.handle("The number of samples must be defined between 1 and 131072.", self.logger.ERROR)
             return False
         if samplerate not in [1000000, 5000000, 10000000, 18750000]:
             self.logger.handle("The sample rate should be 1000000, 5000000 10000000 or 18750000).", self.logger.ERROR)
             return False
         if channels not in range(1, 9):
-            self.logger.handle("The channels parameters must be defined between 1 and 8", self.logger.ERROR)
+            self.logger.handle("The channels parameter must be defined between 1 and 8", self.logger.ERROR)
             return False
         return True
 
@@ -81,11 +81,10 @@ class LogicAnalyzer(AModule):
 
         if self.params_validator(trigger_gpio_pin, samples, samplerate, channels):
             logic_instance = Logic(serial_instance=self.owf_serial)
-            self.logger.handle("Run the sniffing process...", self.logger.INFO)
+            self.logger.handle("Sniffing samples...", self.logger.INFO)
             start_time = time.time()
             samples = logic_instance.sniff(trigger_gpio_pin=trigger_gpio_pin, samples=samples, samplerate=samplerate)
-            print("--- %s seconds ---" % (time.time() - start_time))
-            self.logger.handle("Save results in the CSV file...", self.logger.INFO)
+            self.logger.handle("Saving results to CSV file...", self.logger.INFO)
             with open(output_file, 'w', newline='') as file:
                 writer = csv.writer(file)
                 for sample_byte in samples:
@@ -98,11 +97,11 @@ class LogicAnalyzer(AModule):
     def run(self):
         """
         Main function.
-        Run a logic analyze and save samples to a CSV file which can be opened with pulseview.
+        Run a logic capture and save samples to a CSV file which can be opened with pulseview.
         :return: Nothing.
         """
-        # If detect_octowire is True then Detect and connect to the Octowire hardware. Else, connect to the Octowire
-        # using the parameters that were configured. It sets the self.owf_serial variable if the hardware is found.
+        # If detect_octowire is True then detect and connect to the Octowire hardware. Else, connect to the Octowire
+        # using the parameters that were configured. This sets the self.owf_serial variable if the hardware is found.
         self.connect()
         if not self.owf_serial:
             return
