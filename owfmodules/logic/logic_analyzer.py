@@ -19,7 +19,7 @@ class LogicAnalyzer(AModule):
         super(LogicAnalyzer, self).__init__(owf_config)
         self.meta.update({
             'name': 'Logic Analyzer',
-            'version': '1.0.0',
+            'version': '1.0.1',
             'description': 'Collect samples on 8 GPIO channels (GPIO8-GPIO15) and save the result in a '
                            'CSV file for analysis in pulseview',
             'author': 'Jordan Ovrè / Ghecko <jovre@immunit.ch>, Paul Duncan / Eresse <pduncan@immunit.ch>'
