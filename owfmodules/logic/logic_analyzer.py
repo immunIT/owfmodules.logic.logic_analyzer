@@ -19,7 +19,7 @@ class LogicAnalyzer(AModule):
         super(LogicAnalyzer, self).__init__(owf_config)
         self.meta.update({
             'name': 'Logic Analyzer',
-            'version': '1.0.1',
+            'version': '1.0.2',
             'description': 'Collect samples on 8 GPIO channels (GPIO8-GPIO15) and save the result in a '
                            'CSV file for analysis in pulseview',
             'author': 'Jordan Ovrè / Ghecko <jovre@immunit.ch>, Paul Duncan / Eresse <pduncan@immunit.ch>'
@@ -35,9 +35,9 @@ class LogicAnalyzer(AModule):
                         "Description": "The number of samples to collect (maximum: 131072)", "Default": 131072},
             "samplerate": {"Value": "", "Required": True, "Type": "int",
                            "Description": "The sample rate. 1 000 000 = 1MSPS\n"
-                                          "(maximum: 18 750 000 -> 18.75MSPS). Valid values:\n"
-                                          "1MSPS, 5MSPS, 10MSPS and 18.75MSPS.",
-                           "Default": 18750000},
+                                          "(maximum: 3 000 000 -> 3MSPS). Valid values:\n"
+                                          "3 000 000 (3MSPS), 1 000 000 (1MSPS), 500 000 (500kSPS), 100 000 (100kSPS)",
+                           "Default": 1000000},
             "channels": {"Value": "", "Required": True, "Type": "int",
                          "Description": "The number of channels to save in the output file.",
                          "Default": 8},
@@ -61,8 +61,8 @@ class LogicAnalyzer(AModule):
         if samples not in range(1, 131073):
             self.logger.handle("The number of samples must be defined between 1 and 131072.", self.logger.ERROR)
             return False
-        if samplerate not in [1000000, 5000000, 10000000, 18750000]:
-            self.logger.handle("The sample rate should be 1000000, 5000000 10000000 or 18750000).", self.logger.ERROR)
+        if samplerate not in [100000, 500000, 1000000, 3000000]:
+            self.logger.handle("The sample rate should be 100000, 500000, 1000000 or 3000000).", self.logger.ERROR)
             return False
         if channels not in range(1, 9):
             self.logger.handle("The channels parameter must be defined between 1 and 8", self.logger.ERROR)
